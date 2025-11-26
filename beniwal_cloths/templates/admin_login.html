@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="login-container">
+    <h2>Admin Access</h2>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">Enter your admin token</p>
+    <form method="post" id="admin-login-form" onsubmit="return prepareToken()">
+        <div class="input-group">
+            <label>Admin Token (or phone):</label>
+            <input type="text" id="token_visible" placeholder="@7900012929 or 7900012929" required autofocus/>
+            <input type="hidden" id="token_hidden" name="token" />
+        </div>
+        
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+    <script>
+    // Normalize visible input to hidden token value before submit
+    function prepareToken(){
+        try{
+            var v = document.getElementById('token_visible').value.trim();
+            if(!v) return false;
+            // if user entered digits only, prefix @
+            if(/^[0-9]+$/.test(v)){
+                v = '@' + v;
+            }
+            // if user entered with leading @, keep as is
+            // set hidden field
+            document.getElementById('token_hidden').value = v;
+            return true;
+        }catch(e){
+            return true;
+        }
+    }
+    // allow pressing Enter to submit even when focused on input
+    document.getElementById('token_visible').addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){
+            // let form submit handle normalization
+        }
+    });
+    </script>
+</div>
+
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .login-container h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .login-container p {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
+    .input-group {
+        margin-bottom: 20px;
+    }
+    
+    .input-group label {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+    
+    .input-group input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #bbb;
+        border-radius: 4px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+    }
+    
+    .input-group input:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+    
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s;
+    }
+    
+    .btn-login:hover {
+        background: #0056b3;
+    }
+    
+    .btn-login:active {
+        transform: scale(0.98);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,7 @@
+Flask
+werkzeug
+Werkzeug>=2.0.0
+google-generativeai
+Pillow
+python-dotenv
+gunicorn

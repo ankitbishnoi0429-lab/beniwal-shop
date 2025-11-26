@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Orders</h2>
+<table>
+  <tr><th>ID</th><th>Product</th><th>Buyer</th><th>Buyer Phone</th><th>Total</th><th>Status</th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.id }}</td>
+    <td>{{ o.product_title }}</td>
+    <td>{{ o.buyer_phone }}</td>
+    <td>
+      {% if o.show_buyer_phone %}
+        {{ o.buyer_phone }}
+      {% else %}
+        Hidden
+      {% endif %}
+    </td>
+    <td>₹{{ o.total }}</td>
+    <td>{{ o.status }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<style>
+  table { width:100%; border-collapse: collapse }
+  th,td { border:1px solid #ddd; padding:8px }
+</style>
+{% endblock %}

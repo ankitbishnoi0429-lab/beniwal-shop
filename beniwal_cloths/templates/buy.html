@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="buy-container">
+    <div class="product-details">
+        <img src="/static/{{ images[0] if images and images|length>0 else 'placeholder.png' }}" alt="product image" onerror="this.src='/static/placeholder.png'"/>
+        <h2>{{ p.title }}</h2>
+        <p><strong>Description:</strong> {{ p.description }}</p>
+        <p><strong>Price:</strong> ₹{{ p.price }}</p>
+        <p><strong>Delivery Charge:</strong> ₹10</p>
+        <p><strong>Total:</strong> ₹{{ p.price + 10 }}</p>
+    </div>
+    
+    <div class="seller-info">
+        <h3>Seller Information</h3>
+        <p><strong>Name:</strong> {{ p.seller_name }}</p>
+        <p><strong>Rating:</strong> {{ p.seller_rating }} ⭐</p>
+        <p><strong>Phone:</strong> {{ p.seller_phone }}</p>
+    </div>
+    
+    <div class="buy-form">
+        <h3>Confirm Your Purchase</h3>
+        <form method="post">
+            <label>Your Phone Number (required): 
+                <input type="tel" name="buyer_phone" placeholder="Enter your phone number" required/>
+            </label><br/>
+            <label><input type="checkbox" name="share_phone" checked/> Share my phone with seller</label><br/>
+            <button type="submit" class="btn-primary">Proceed to Order</button>
+            <a href="/product/{{ p.id }}" class="btn-secondary">Back</a>
+        </form>
+    </div>
+</div>
+
+<style>
+    .buy-container {
+        max-width: 900px;
+        margin: 20px auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        padding: 20px;
+    }
+    
+    .product-details {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    
+    .product-details img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+    
+    .product-details h2 {
+        color: #333;
+        margin: 10px 0;
+    }
+    
+    .product-details p {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+    
+    .seller-info {
+        background: #f0f8ff;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #bbb;
+    }
+    
+    .seller-info h3 {
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+    
+    .seller-info p {
+        margin: 10px 0;
+        font-size: 15px;
+    }
+    
+    .buy-form {
+        grid-column: 1 / -1;
+        background: #f5f5f5;
+        padding: 25px;
+        border-radius: 8px;
+        border: 2px solid #28a745;
+    }
+    
+    .buy-form h3 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    .buy-form label {
+        display: block;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+    
+    .buy-form input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #bbb;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+    
+    .buy-form button,
+    .buy-form a {
+        padding: 12px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: bold;
+        display: inline-block;
+        text-decoration: none;
+        text-align: center;
+    }
+    
+    .btn-primary {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #218838;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+    
+    @media (max-width: 768px) {
+        .buy-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .buy-form {
+            grid-column: 1;
+        }
+    }
+</style>
+{% endblock %}

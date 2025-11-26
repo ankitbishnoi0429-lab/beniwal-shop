@@ -1,0 +1,51 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{{ site_title }}</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+<header>
+  <h1 class="site-title" data-color="{{ header_color|default('#c0392b') }}">{{ site_title }}</h1>
+    <div class="header-right">
+      <div class="lang-switch">
+        <a href="/set_language/en">EN</a> | <a href="/set_language/hi">HI</a>
+      </div>
+      {% if session.get('admin') %}
+        <div class="corner">
+            <a href="/admin/dashboard">Dashboard</a>
+            <a href="/seller/upload">Upload Product</a>
+            <a href="/admin/logout">Logout</a>
+        </div>
+      {% else %}
+        <a class="corner" href="/admin/login">Admin Login</a>
+      {% endif %}
+    </div>
+</header>
+<script>
+  // apply header color using JS to avoid template-in-CSS linter warnings
+  (function(){
+    try {
+      var el = document.querySelector('.site-title');
+      if(el && el.dataset && el.dataset.color){
+        el.style.color = el.dataset.color;
+      }
+    } catch(e){}
+  })();
+</script>
+<main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for m in messages %}
+          <li>{{ m }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

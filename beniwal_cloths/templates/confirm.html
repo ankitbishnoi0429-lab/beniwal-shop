@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="confirm-container">
+    <div class="order-summary">
+        <h2>Order Summary</h2>
+        <div class="order-details">
+            <p><strong>Order ID:</strong> #{{ order.id }}</p>
+            <p><strong>Product:</strong> {{ prod.title }}</p>
+            <p><strong>Price:</strong> ₹{{ prod.price }}</p>
+            <p><strong>Delivery Charge:</strong> ₹10</p>
+            <p class="total"><strong>Total:</strong> ₹{{ order.total }}</p>
+        </div>
+    </div>
+    
+    <div class="call-instructions">
+        <h3>📞 Next Steps</h3>
+        <p>Your order has been created. Now follow these steps:</p>
+        <ol>
+            <li>Call the seller at: <strong class="phone-number">{{ seller_phone }}</strong></li>
+            <li>Confirm your order details with the seller</li>
+            <li>Complete the call</li>
+            <li>Click the button below to confirm</li>
+        </ol>
+    </div>
+    
+    <div class="confirmation-form">
+        <h3>Order Confirmation</h3>
+        <p>Have you completed the call with the seller?</p>
+        <form method="post">
+            <button type="submit" name="action" value="yes" class="btn-confirm">Yes, Confirm Order</button>
+            <button type="submit" name="action" value="no" class="btn-cancel">No, Cancel Order</button>
+        </form>
+    </div>
+    
+    <div class="buyer-info">
+        <h3>Your Information</h3>
+        <p><strong>Phone:</strong> {{ order.buyer_phone }}</p>
+        <p><strong>Order Status:</strong> <span class="status-pending">Pending</span></p>
+    </div>
+</div>
+
+<style>
+    .confirm-container {
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+    
+    .order-summary {
+        background: #f0f8ff;
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid #740648;
+        margin-bottom: 25px;
+    }
+    
+    .order-summary h2 {
+        color: #0b5604;
+        margin-top: 0;
+    }
+    
+    .order-details p {
+        margin: 12px 0;
+        font-size: 15px;
+    }
+    
+    .order-details .total {
+        font-size: 18px;
+        color: #28a745;
+        border-top: 2px solid #9b0000;
+        padding-top: 10px;
+        margin-top: 15px;
+    }
+    
+    .call-instructions {
+        background: #a07b00;
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 25px;
+    }
+    
+    .call-instructions h3 {
+        color: #856404;
+        margin-top: 0;
+    }
+    
+    .call-instructions ol {
+        padding-left: 20px;
+    }
+    
+    .call-instructions li {
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+    
+    .phone-number {
+        background: #ff0000;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 16px;
+    }
+    
+    .confirmation-form {
+        background: #00ffe1;
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid #4caf50;
+        margin-bottom: 25px;
+    }
+    
+    .confirmation-form h3 {
+        color: #00ffe1;
+        margin-top: 0;
+    }
+    
+    .confirmation-form p {
+        margin: 15px 0;
+        font-weight: 500;
+    }
+    
+    .confirmation-form form {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .btn-confirm,
+    .btn-cancel {
+        flex: 1;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
+    .btn-confirm {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-confirm:hover {
+        background: #218838;
+    }
+    
+    .btn-cancel {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-cancel:hover {
+        background: #c82333;
+    }
+    
+    .buyer-info {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    
+    .buyer-info h3 {
+        color: #333;
+        margin-top: 0;
+    }
+    
+    .buyer-info p {
+        margin: 10px 0;
+    }
+    
+    .status-pending {
+        background: #ffc107;
+        color: #000;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 13px;
+    }
+</style>
+{% endblock %}

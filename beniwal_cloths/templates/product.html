@@ -1,0 +1,269 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="product-container">
+    <div class="product-images">
+        <div class="main-image-container">
+            <img id="mainImage" src="/static/{{ images[0] if images else 'placeholder.png' }}" alt="product image" onerror="this.src='/static/placeholder.png'"/>
+        </div>
+        
+        {% if videos and videos|length > 0 %}
+        <div class="main-video-container">
+            <video id="mainVideo" controls style="width:100%; height:320px; object-fit:contain; border-radius:6px; background:#000">
+                <source src="/static/{{ videos[0] }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        {% endif %}
+        {% if images and images|length > 1 %}
+        <div class="thumbnails">
+            {% for img in images %}
+            <div class="thumbnail" onclick="changeImage(this)">
+                <img src="/static/{{ img }}" alt="thumbnail" onerror="this.src='/static/placeholder.png'"/>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if videos and videos|length > 0 %}
+        <div class="video-thumbs">
+            {% for vid in videos %}
+            <div class="thumbnail video-thumb" onclick="changeVideo('/static/{{ vid }}')">
+                <video src="/static/{{ vid }}" muted style="width:100%;height:100%;object-fit:cover"></video>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="product-info">
+        <h2>{{ p.title }}</h2>
+        <p class="description">{{ p.description }}</p>
+        
+        <div class="price-section">
+            <p class="price">₹{{ p.price }}</p>
+            <p class="delivery">+ ₹10 Delivery</p>
+        </div>
+        
+        <div class="seller-section">
+            <h3>Seller Information</h3>
+            <p><strong>Name:</strong> {{ p.seller_name }}</p>
+            <p><strong>Rating:</strong> {{ p.seller_rating }} ⭐</p>
+            <p><strong>Contact:</strong> {{ p.seller_phone }}</p>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/buy/{{ p.id }}" class="btn-buy">Buy Now</a>
+            <a href="/" class="btn-back">Back to Shop</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function changeImage(thumbnailElement) {
+    const mainImage = document.getElementById('mainImage');
+    const imageSrc = thumbnailElement.querySelector('img').src;
+    mainImage.src = imageSrc;
+    
+    // Highlight selected thumbnail
+    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+    thumbnailElement.classList.add('active');
+}
+
+function changeVideo(videoPath) {
+    const mainVideo = document.getElementById('mainVideo');
+    if (!mainVideo) return;
+    mainVideo.pause();
+    mainVideo.src = videoPath;
+    mainVideo.load();
+    mainVideo.play();
+    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+}
+
+// Set first thumbnail as active on load
+document.addEventListener('DOMContentLoaded', function() {
+    const firstThumb = document.querySelector('.thumbnail');
+    if (firstThumb) firstThumb.classList.add('active');
+});
+</script>
+
+<style>
+    .product-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 20px;
+    }
+    
+    .product-images {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .main-image-container {
+        width: 100%;
+        height: 400px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    .main-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 6px;
+    }
+    
+    .thumbnails {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 10px;
+    }
+    
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .thumbnail:hover {
+        border-color: #007bff;
+        transform: scale(1.05);
+    }
+    
+    .thumbnail.active {
+        border-color: #28a745;
+        box-shadow: 0 0 0 2px #28a745;
+    }
+    
+    .thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .main-video-container { margin-top: 10px; }
+    .video-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 10px; }
+    .video-thumb video { width:100%; height:100%; object-fit:cover; display:block }
+    
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .product-info h2 {
+        font-size: 28px;
+        color: #333;
+        margin: 0 0 15px 0;
+    }
+    
+    .description {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #666;
+        margin-bottom: 20px;
+        background: #f0f0f0;
+        padding: 12px;
+        border-radius: 4px;
+    }
+    
+    .price-section {
+        background: #e8f5e9;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #4caf50;
+    }
+    
+    .price {
+        font-size: 32px;
+        font-weight: bold;
+        color: #28a745;
+        margin: 0;
+    }
+    
+    .delivery {
+        font-size: 14px;
+        color: #666;
+        margin: 5px 0 0 0;
+    }
+    
+    .seller-section {
+        background: #f0f8ff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #007bff;
+    }
+    
+    .seller-section h3 {
+        margin: 0 0 15px 0;
+        color: #007bff;
+    }
+    
+    .seller-section p {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .btn-buy,
+    .btn-back {
+        flex: 1;
+        padding: 15px;
+        text-align: center;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-buy {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-buy:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .btn-back {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-back:hover {
+        background: #5a6268;
+    }
+    
+    @media (max-width: 768px) {
+        .product-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .main-image-container {
+            height: 300px;
+        }
+    }
+</style>
+{% endblock %}

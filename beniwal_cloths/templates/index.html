@@ -1,0 +1,106 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="grid">
+{% for p in products %}
+  <div class="card">
+    <div class="image-carousel">
+      {% if p.images_list and p.images_list|length > 0 %}
+        <img src="/static/{{ p.images_list[0] }}" alt="product image" class="main-image" onerror="this.src='/static/placeholder.png'"/>
+        {% if p.images_list|length > 1 %}
+          <span class="image-count">+{{ p.images_list|length - 1 }}</span>
+        {% endif %}
+      {% else %}
+        <img src="/static/placeholder.png" alt="product image" class="main-image"/>
+      {% endif %}
+    </div>
+    <h3>{{ p.title }}</h3>
+    <p>Price: ₹{{ p.price }}</p>
+    <p>Seller: {{ p.seller_name }} — Rating: {{ p.seller_rating }} ⭐</p>
+    <a href="/product/{{ p.id }}">View</a>
+  </div>
+{% else %}
+  <p>No products yet. Admin can upload at top-right.</p>
+{% endfor %}
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #930000;
+    box-shadow: 0 2px 8px rgba(23, 23, 23, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  .image-carousel {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background: #7c7474;
+    overflow: hidden;
+  }
+  
+  .main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .image-count {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.7);
+    color: rgb(177, 188, 159);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .card h3 {
+    padding: 10px;
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .card p {
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+  }
+  
+  .card a {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  .card a:hover {
+    background: #0056b3;
+  }
+</style>
+{% endblock %}
